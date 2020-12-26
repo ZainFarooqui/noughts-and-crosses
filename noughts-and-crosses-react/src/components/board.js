@@ -2,6 +2,7 @@ import '../App.css';
 import React from 'react';
 import Square from './square'
 import win_achieved from './game'
+import WinCard from './wincard'
 
 class Board extends React.Component{
   constructor(props) {
@@ -12,30 +13,35 @@ class Board extends React.Component{
   }
 
   handleClick(i) {
-      let newArray = this.state.gridArray.slice()
-      newArray[i] = (this.state.player1Turn) ? "1":"2"
-      let gameStatus = win_achieved(newArray)
-      this.setState({gridArray: newArray, player1Turn: !this.state.player1Turn, gameOver: gameStatus}, console.log(gameStatus))
+    let newArray = this.state.gridArray.slice()
+    newArray[i] = (this.state.player1Turn) ? "1":"2"
+    let gameStatus = win_achieved(newArray)
+    this.setState({gridArray: newArray, player1Turn: !this.state.player1Turn, gameOver: gameStatus}, console.log(gameStatus))
   }
+
+  renderSquare(i) {
+    return <Square value={this.state.gridArray[i]} clicked={this.state.gameOver} clickEvent={this.state.gridArray[i] === "0" ? () => this.handleClick(i): undefined}/>
+  }
+
   render() {
     return (
       <div>
         <div>
-            <Square value={this.state.gridArray[0]} clickEvent={this.state.gridArray[0] === "0" ? () => this.handleClick(0): undefined}/>
-            <Square value={this.state.gridArray[1]} clickEvent={this.state.gridArray[1] === "0" ? () => this.handleClick(1): undefined}/>
-            <Square value={this.state.gridArray[2]} clickEvent={this.state.gridArray[2] === "0" ? () => this.handleClick(2): undefined}/>
+            {this.renderSquare(0)}
+            {this.renderSquare(1)}
+            {this.renderSquare(2)}
         </div>
         <div>
-            <Square value={this.state.gridArray[3]} clickEvent={this.state.gridArray[3] === "0" ? () => this.handleClick(3): undefined}/>
-            <Square value={this.state.gridArray[4]} clickEvent={this.state.gridArray[4] === "0" ? () => this.handleClick(4): undefined}/>
-            <Square value={this.state.gridArray[5]} clickEvent={this.state.gridArray[5] === "0" ? () => this.handleClick(5): undefined}/>
+            {this.renderSquare(3)}
+            {this.renderSquare(4)}
+            {this.renderSquare(5)}
         </div>
         <div>
-            <Square value={this.state.gridArray[6]} clickEvent={this.state.gridArray[6] === "0" ? () => this.handleClick(6): undefined}/>
-            <Square value={this.state.gridArray[7]} clickEvent={this.state.gridArray[7] === "0" ? () => this.handleClick(7): undefined}/>
-            <Square value={this.state.gridArray[8]} clickEvent={this.state.gridArray[8] === "0" ? () => this.handleClick(8): undefined}/>
+            {this.renderSquare(6)}
+            {this.renderSquare(7)}
+            {this.renderSquare(8)}
         </div>
-
+        {!this.state.gameOver ? undefined:<WinCard player1Turn={this.state.player1Turn}/>}
       </div>
     )
   }

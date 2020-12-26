@@ -23,9 +23,12 @@ class Board extends React.Component{
     return <Square value={this.state.gridArray[i]} clicked={this.state.gameOver} clickEvent={this.state.gridArray[i] === "0" ? () => this.handleClick(i): undefined}/>
   }
 
+  restartGame() {
+    this.setState({gridArray: Array(9).fill("0"), player1Turn: true, gameOver: false})
+  }
   render() {
     return (
-      <div>
+      <div className="board">
         <div>
             {this.renderSquare(0)}
             {this.renderSquare(1)}
@@ -41,7 +44,7 @@ class Board extends React.Component{
             {this.renderSquare(7)}
             {this.renderSquare(8)}
         </div>
-        {!this.state.gameOver ? undefined:<WinCard player1Turn={this.state.player1Turn}/>}
+        {!this.state.gameOver ? undefined:<WinCard player1Turn={this.state.player1Turn} restartGame={() => this.restartGame()}/>}
       </div>
     )
   }

@@ -5,7 +5,9 @@ import Board from './components/board'
 class App extends React.Component{
   render() {
     return (
-      <Board/>
+      <div className="board-container">
+        <Board />
+      </div>
     )
   }
 

@@ -16,5 +16,9 @@ export default function win_achieved(array) {
     if (array[2] === array[4] && array[2] === array[6] && array[2] !== "0") {
         return true
     }
-    return false
+    return array.every(arrayFilled)
+}
+
+function arrayFilled(value) {
+    return value != "0"
 }

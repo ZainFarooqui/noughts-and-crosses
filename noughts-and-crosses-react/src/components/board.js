@@ -9,23 +9,32 @@ class Board extends React.Component{
     super(props);
     this.state = {gridArray: Array(9).fill("0"),
                   player1Turn: true,
-                  gameOver: false};
+                  gameState: "Running"};
   }
 
   handleClick(i) {
     let newArray = this.state.gridArray.slice()
     newArray[i] = (this.state.player1Turn) ? "1":"2"
-    let gameStatus = win_achieved(newArray)
-    this.setState({gridArray: newArray, player1Turn: !this.state.player1Turn, gameOver: gameStatus}, console.log(gameStatus))
+    const gameStatus = win_achieved(newArray)
+    this.setState({gridArray: newArray, player1Turn: !this.state.player1Turn, gameState: gameStatus})
   }
 
   renderSquare(i) {
-    return <Square value={this.state.gridArray[i]} clicked={this.state.gameOver} clickEvent={this.state.gridArray[i] === "0" ? () => this.handleClick(i): undefined}/>
+    return <Square value={this.state.gridArray[i]} clicked={this.state.gameState} clickEvent={this.state.gridArray[i] === "0" ? () => this.handleClick(i): undefined}/>
   }
 
   restartGame() {
-    this.setState({gridArray: Array(9).fill("0"), player1Turn: true, gameOver: false})
+    this.setState({gridArray: Array(9).fill("0"), player1Turn: true, gameState: "Running"})
   }
+
+  isGameOver() {
+    if (this.state.gameState === "Running") {
+      return false
+    } else {
+      return true
+    }
+  }
+
   render() {
     return (
       <div className="board">
@@ -44,7 +53,7 @@ class Board extends React.Component{
             {this.renderSquare(7)}
             {this.renderSquare(8)}
         </div>
-        {!this.state.gameOver ? undefined:<WinCard player1Turn={this.state.player1Turn} restartGame={() => this.restartGame()}/>}
+        {!this.isGameOver() ? undefined:<WinCard player1Turn={this.state.player1Turn} gameState = {this.state.gameState} restartGame={() => this.restartGame()}/>}
       </div>
     )
   }
